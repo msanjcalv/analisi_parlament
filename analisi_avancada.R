@@ -152,13 +152,15 @@ ggsave("grafic_sentiment_temes.png", p1, width = 10, height = 6, bg = "white")
 
 # Gràfic 2: Distribució de Sentiment Global per Partit
 p2 <- df_frases %>%
-  filter(partit != "Desconegut") %>%
+  filter(partit != "Desconegut", sentiment_score != 0) %>%
   ggplot(aes(x = reorder(partit, sentiment_score, FUN = median), y = sentiment_score, fill = partit)) +
-  geom_boxplot(alpha = 0.7, outlier.alpha = 0.5) +
+  geom_boxplot(alpha = 0.6, outlier.shape = NA) +
+  geom_jitter(width = 0.2, height = 0.1, alpha = 0.4, color = "darkgray") +
   theme_minimal() +
   scale_fill_manual(values = colors_partits) +
   coord_flip() +
-  labs(title = "Distribució del Sentiment Global per Grup Parlamentari",
+  labs(title = "Distribució del Sentiment per Grup Parlamentari",
+       subtitle = "Només s'hi inclouen les frases amb polaritat detectada (s'exclou el 0)",
        x = "Grup Parlamentari", y = "Puntuació de Sentiment") +
   theme(legend.position = "none")
 
